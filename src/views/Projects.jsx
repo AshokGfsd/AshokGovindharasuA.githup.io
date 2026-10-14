@@ -9,7 +9,7 @@ const Projects = () => {
   const theme = useContext(ThemeContext);
 
   return (
-    <section id="projects" className="py-8 transition-colors duration-400">
+    <section id="projects" className="neu-section scroll-mt-24 transition-colors duration-400">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-10 flex flex-col items-center">
@@ -30,7 +30,7 @@ const Projects = () => {
         {/* Projects Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-stretch">
           {projectsData.map((project, i) => (
-            <Card project={project} key={i} />
+            <Card project={project} index={i} key={i} />
           ))}
         </div>
       </div>

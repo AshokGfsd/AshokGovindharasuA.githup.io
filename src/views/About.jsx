@@ -28,7 +28,7 @@ const About = () => {
   };
 
   return (
-    <section id="about" className="py-8 transition-colors duration-400">
+    <section id="about" className="neu-section scroll-mt-24 transition-colors duration-400">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-10 flex flex-col items-center">
