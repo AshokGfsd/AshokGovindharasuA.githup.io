@@ -1,19 +1,23 @@
-import React, { createContext, useEffect, useReducer } from "react";
+"use client";
 
-export const ThemeContext = createContext();
-let mode = localStorage.getItem("darkMode");
-const initialState = { darkMode: mode === "true" };
+import React, { createContext, useEffect, useReducer, useState } from "react";
 
-if (mode === null) {
-  localStorage.setItem("darkMode", "false");
-}
+export const ThemeContext = createContext({
+  state: { darkMode: false },
+  dispatch: () => {},
+});
+
 const themeReducer = (state, action) => {
   switch (action.type) {
     case "LIGHTMODE":
-      localStorage.setItem("darkMode", "false");
+      if (typeof window !== "undefined") {
+        localStorage.setItem("darkMode", "false");
+      }
       return { darkMode: false };
     case "DARKMODE":
-      localStorage.setItem("darkMode", "true");
+      if (typeof window !== "undefined") {
+        localStorage.setItem("darkMode", "true");
+      }
       return { darkMode: true };
     default:
       return state;
@@ -21,12 +25,26 @@ const themeReducer = (state, action) => {
 };
 
 export function ThemeProvider({ children }) {
-  const [state, dispatch] = useReducer(themeReducer, initialState);
+  const [state, dispatch] = useReducer(themeReducer, { darkMode: false });
+
+  useEffect(() => {
+    try {
+      const mode = localStorage.getItem("darkMode");
+      if (mode === "true") {
+        dispatch({ type: "DARKMODE" });
+      } else if (mode === "false") {
+        dispatch({ type: "LIGHTMODE" });
+      } else {
+        localStorage.setItem("darkMode", "false");
+        dispatch({ type: "LIGHTMODE" });
+      }
+    } catch {
+      // Ignore localStorage access restrictions
+    }
+  }, []);
 
   return (
-    <ThemeContext.Provider
-      value={{ state: false || state, dispatch: dispatch }}
-    >
+    <ThemeContext.Provider value={{ state, dispatch }}>
       {children}
     </ThemeContext.Provider>
   );

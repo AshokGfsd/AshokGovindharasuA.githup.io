@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useContext, useState } from "react";
 import { contactLinks } from "../constants";
 import { ThemeContext } from "../themeProvider";
@@ -19,8 +21,8 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = () => {
-    // console.log(formData);
+  const handleSubmit = (e) => {
+    if (e) e.preventDefault();
     setFormData({
       name: "",
       email: "",

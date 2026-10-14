@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useContext } from "react";
 import heroBg from "../assets/webdev.svg";
 import { contactLinks } from "../constants";
@@ -20,13 +22,18 @@ const Home = () => {
     loop: true,
     delaySpeed: 2000,
   });
+
+  const cloudUrl = cloud?.src || cloud || "/assets/cloudBg.png";
+  const cloudDarkUrl = cloudDark?.src || cloudDark || "/assets/cloudDark.png";
+  const heroBgUrl = heroBg?.src || heroBg || "/assets/webdev.svg";
+
   return (
     <>
       <div
         style={
           darkMode
-            ? { backgroundImage: `url('${cloud}')`, backgroundSize: "cover" }
-            : { backgroundImage: `url('${cloudDark}'`, backgroundSize: "cover" }
+            ? { backgroundImage: `url('${cloudUrl}')`, backgroundSize: "cover" }
+            : { backgroundImage: `url('${cloudDarkUrl}')`, backgroundSize: "cover" }
         }
       >
         <main
@@ -75,7 +82,7 @@ const Home = () => {
             <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
               <div className="mt-3 sm:mt-0 cursor-pointer w-1/2">
                 <a
-                  href="./Resume.pdf"
+                  href="/Resume.pdf"
                   target="_blank"
                   className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-500 hover:bg-blue-200 md:py-4 md:text-lg md:px-10"
                 >
@@ -97,7 +104,7 @@ const Home = () => {
               },
               hidden: { opacity: 1, y: 80 },
             }}
-            src={heroBg}
+            src={heroBgUrl}
             alt=""
             className="md:w-3/6 hidden sm:block"
           />
