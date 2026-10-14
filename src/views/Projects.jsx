@@ -7,27 +7,34 @@ import { projectsData } from "../constants";
 
 const Projects = () => {
   const theme = useContext(ThemeContext);
-  const darkMode = theme.state.darkMode;
 
   return (
-    <div
-      id="projects"
-      className={darkMode ? "bg-white text-black" : "bg-gray-900 text-white"}
-    >
-      <div className="max-w-7xl mx-auto x-4 sm:px-6 lg:px-8 px-4  pt-24 pb-12">
-        <h2 className="text-5xl font-bold px-4 md:px-0 text-center">
-          Projects
-        </h2>
-        <h4 className="mt-16 text-3xl font-semibold text-blue-600">
-          What I Built
-        </h4>
-        <div className="mt-8 flex justify-between items-stretch flex-wrap">
-          {projectsData.map((el, i) => (
-            <Card project={el} key={i} />
+    <section id="projects" className="py-8 transition-colors duration-400">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className="text-center mb-10 flex flex-col items-center">
+          <div className="mb-3">
+            <span className="neu-badge">Portfolio Highlights</span>
+          </div>
+          <h2 className="neu-title">
+            Featured <span className="neu-title-accent">Projects</span>
+          </h2>
+          <div className="w-16 h-1 bg-blue-500 mx-auto mt-4 rounded-full" />
+          <p className="text-base sm:text-lg opacity-70 mt-4 max-w-2xl mx-auto">
+            A selection of fullstack, frontend, and real-time applications
+            demonstrating end-to-end functionality, responsive UX, and scalable
+            backend design.
+          </p>
+        </div>
+
+        {/* Projects Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-stretch">
+          {projectsData.map((project, i) => (
+            <Card project={project} key={i} />
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

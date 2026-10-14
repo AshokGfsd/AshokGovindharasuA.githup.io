@@ -3,6 +3,7 @@
 import React, { useContext, useState } from "react";
 import { contactLinks } from "../constants";
 import { ThemeContext } from "../themeProvider";
+import { motion } from "framer-motion";
 
 const Contact = () => {
   const theme = useContext(ThemeContext);
@@ -14,7 +15,9 @@ const Contact = () => {
     message: "",
   });
 
-  const handleOnChage = (e) => {
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleOnChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -23,160 +26,232 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
-    setFormData({
-      name: "",
-      email: "",
-      message: "",
-    });
+    if (!formData.name || !formData.email) return;
+
+    setSubmitted(true);
+    setTimeout(() => {
+      setFormData({
+        name: "",
+        email: "",
+        message: "",
+      });
+      setSubmitted(false);
+    }, 3000);
   };
 
   return (
-    <div
+    <section
       id="contact"
-      className={
-        darkMode
-          ? " pt-18 md:h-screen n"
-          : "bg-gray-900 pt-18 text-white md:h-screen"
-      }
+      className="pt-16 pb-12 transition-colors duration-400"
     >
-      <div className="max-w-7xl mx-auto x-4 sm:px-6 lg:px-8 px-4 ">
-        <h2 className="text-5xl font-bold px-4 md:px-0 text-center z-0">
-          Contact
-        </h2>
-        <div className="bg-color-900">
-          <h4 className="mt-12 text-3xl font-semibold text-blue-500">
-            Connect with me
-          </h4>
-          <p className="text-gray-500 text-xl">
-            If you want to know more about me or my work, or if you would just
-            <br />
-            like to say hello, send me a message. I'd love to hear from you.
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className="text-center mb-10 flex flex-col items-center">
+          <div className="mb-3">
+            <span className="neu-badge">Let's Connect</span>
+          </div>
+          <h2 className="neu-title">
+            Get in <span className="neu-title-accent">Touch</span>
+          </h2>
+          <div className="w-16 h-1 bg-blue-500 mx-auto mt-4 rounded-full" />
+          <p className="text-base sm:text-lg opacity-70 mt-4 max-w-xl mx-auto">
+            Whether you have an inquiry, a project idea, or simply want to
+            connect, feel free to drop a message.
           </p>
         </div>
-        <div className="flex justify-between items-center md:items-stretch  flex-col md:flex-row pb-24">
-          <div className="w-full md:pr-8">
-            <form>
-              <div className="my-6">
+
+        {/* Content Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start pb-16">
+          {/* Contact Form: 7 cols on large */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-7 neu-card p-8 sm:p-10"
+          >
+            <h3 className="text-2xl font-bold mb-6 tracking-tight">
+              Send a Message
+            </h3>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
                 <label
                   htmlFor="name"
-                  className={
-                    darkMode
-                      ? "block mb-2 text-lg font-medium text-gray-900"
-                      : "block mb-2 text-lg font-medium text-white"
-                  }
+                  className="block text-sm font-semibold mb-2 opacity-85"
                 >
-                  Name
+                  Your Name
                 </label>
                 <input
                   type="text"
                   id="name"
                   name="name"
                   value={formData.name}
-                  onChange={handleOnChage}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Enter your name"
+                  onChange={handleOnChange}
+                  className="neu-input"
+                  placeholder="e.g. Alex Johnson"
                   required
                 />
               </div>
-              <div className="mb-4">
+
+              <div>
                 <label
                   htmlFor="email"
-                  className={
-                    darkMode
-                      ? "block mb-2 text-lg font-medium text-gray-900"
-                      : "block mb-2 text-lg font-medium text-white"
-                  }
+                  className="block text-sm font-semibold mb-2 opacity-85"
                 >
-                  Email
+                  Your Email
                 </label>
                 <input
                   type="email"
                   id="email"
                   name="email"
                   value={formData.email}
-                  onChange={handleOnChage}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Enter your email"
+                  onChange={handleOnChange}
+                  className="neu-input"
+                  placeholder="e.g. alex@example.com"
                   required
                 />
               </div>
-              <div className="mb-4">
+
+              <div>
                 <label
                   htmlFor="message"
-                  className={
-                    darkMode
-                      ? "block mb-2 text-lg font-medium text-gray-900"
-                      : "block mb-2 text-lg font-medium text-white"
-                  }
+                  className="block text-sm font-semibold mb-2 opacity-85"
                 >
-                  Message
+                  Your Message
                 </label>
                 <textarea
                   id="message"
                   name="message"
+                  rows={4}
                   value={formData.message}
-                  onChange={handleOnChage}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 h-28 w-full text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Enter your message"
+                  onChange={handleOnChange}
+                  className="neu-input !h-32 resize-none"
+                  placeholder="Tell me about your project or inquiry..."
                   required
                 />
               </div>
-              <div className="flex justify-between ">
-                <div className="underline">
-                  <a href="mailto:ashokgfsd@gmail.com" target="_blank">
-                    Send me email directly
-                  </a>
-                </div>
-                <button
-                  onClick={handleSubmit}
-                  className="bg-indigo-500 text-white px-4 py-2 w-40 rounded-md hover:bg-indigo-400"
+
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+                <a
+                  href="mailto:ashokgfsd@gmail.com"
+                  className="text-sm font-semibold text-blue-500 hover:underline flex items-center gap-1.5"
                 >
-                  Submit
+                  <span>Or email me directly</span>
+                  <span>→</span>
+                </a>
+
+                <button
+                  type="submit"
+                  className="neu-btn-primary w-full sm:w-auto"
+                >
+                  {submitted ? (
+                    <span className="flex items-center gap-2">
+                      <svg
+                        className="w-4 h-4 text-emerald-300"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      Message Sent!
+                    </span>
+                  ) : (
+                    <span>Send Message</span>
+                  )}
                 </button>
               </div>
             </form>
-          </div>
-          <div className="w-full flex flex-col md:items-end  mt-12 md:mt-6">
-            <h1 className="text-3xl font-bold">Phone</h1>
-            <a className="mb-12 mt-4 font-semibold text-blue-700 block uppercase">
-              +91 6379841036
-            </a>
-            <h1 className="text-3xl font-bold">Email</h1>
-            <a
-              target="_blank"
-              className="mb-12 mt-4 font-semibold text-blue-700 block"
-            >
-              ashokgfsd@gmail.com
-            </a>
-            <h1 className="text-3xl  font-bold">Social</h1>
-            <ul className="flex">
-              {contactLinks.map((el, i) => (
+          </motion.div>
+
+          {/* Contact Details & Socials: 5 cols on large */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="lg:col-span-5 space-y-6"
+          >
+            {/* Phone Card */}
+            <div className="neu-card p-6 flex items-center gap-5">
+              <div className="neu-btn-circle !w-12 !h-12 flex-shrink-0 text-xl">
+                📱
+              </div>
+              <div>
+                <div className="text-xs font-bold uppercase tracking-wider opacity-60">
+                  Phone
+                </div>
                 <a
-                  key={i}
-                  href={el.link}
-                  target="_blank"
-                  className="md:ml-6 md:mr-0 mr-6 cursor-pointer mt-4 hover:scale-125 flex flex-col justify-center items-center"
+                  href="tel:+916379841036"
+                  className="text-lg font-bold text-blue-500 hover:underline mt-0.5 block"
                 >
-                  <img alt="" src={el.url} />
-                  <p className="text-md mt-2 hover:hidden">{el.name}</p>
+                  +91 6379841036
                 </a>
-              ))}
-            </ul>
+              </div>
+            </div>
+
+            {/* Email Card */}
+            <div className="neu-card p-6 flex items-center gap-5">
+              <div className="neu-btn-circle !w-12 !h-12 flex-shrink-0 text-xl">
+                ✉️
+              </div>
+              <div>
+                <div className="text-xs font-bold uppercase tracking-wider opacity-60">
+                  Email
+                </div>
+                <a
+                  href="mailto:ashokgfsd@gmail.com"
+                  className="text-lg font-bold text-blue-500 hover:underline mt-0.5 block"
+                >
+                  ashokgfsd@gmail.com
+                </a>
+              </div>
+            </div>
+
+            {/* Social Network Card */}
+            <div className="neu-card p-6">
+              <div className="text-xs font-bold uppercase tracking-wider opacity-60 mb-4">
+                Connect on Social Networks
+              </div>
+              <div className="flex items-center gap-4">
+                {contactLinks.map((el, i) => (
+                  <a
+                    key={i}
+                    href={el.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="neu-btn !py-2.5 !px-4 text-sm flex items-center gap-2.5"
+                  >
+                    <img
+                      alt=""
+                      src={el.url}
+                      className="w-5 h-5 object-contain"
+                    />
+                    <span>{el.name}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Neumorphic Footer */}
+        <div className="mt-12 pt-8 border-t border-white/10 dark:border-white/5">
+          <div className="neu-well p-4 flex flex-col sm:flex-row items-center justify-between text-center gap-2 text-sm opacity-80">
+            <span>
+              © {new Date().getFullYear()} Ashok Govindharasu A. All rights
+              reserved.
+            </span>
           </div>
         </div>
       </div>
-      <div
-        className={
-          darkMode
-            ? "w-full bg-white text-black text-lg py-3 flex justify-center md:mt-20"
-            : "w-full bg-gray-900 text-white text-lg py-3 flex justify-center md:mt-20"
-        }
-      >
-        Made with
-        <div className="text-red-500 px-2 text-2xl">&#10084;</div>
-        by Ashok
-      </div>
-    </div>
+    </section>
   );
 };
 

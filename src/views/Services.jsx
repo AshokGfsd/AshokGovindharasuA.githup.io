@@ -7,55 +7,114 @@ import { motion } from "framer-motion";
 
 const Services = () => {
   const theme = useContext(ThemeContext);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring", stiffness: 120, damping: 14 },
+    },
+  };
+
   return (
-    <div
-      className={
-        theme.state.darkMode ? "pb-20 bg-fixed" : "pb-20 bg-black bg-gray-900"
-      }
-      // style={{backgroundImage: `url('https://i.pinimg.com/originals/b0/b1/f5/b0b1f5d33de00e3c21ad29bbba25e31b.gif')`}}>
-    >
-      <div
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 px-4 pt-20"
-        id="services"
-      >
-        <h2
-          className={
-            theme.state.darkMode
-              ? "text-5xl font-bold px-4 md:px-0 text-center"
-              : "text-5xl font-bold px-4 md:px-0 text-center text-white"
-          }
-        >
-          Services
-        </h2>
-        <div className="">
-          <h4 className=" text-3xl font-semibold text-blue-500">
-            What I Provide
-          </h4>
-          <div className="flex md:flex-row justify-between flex-col md:items-stretch items-center ">
-            {serviceData.map((el, i) => (
-              <motion.div
-                key={i}
-                initial="hidden"
-                whileInView={"visible"}
-                variants={{
-                  visible: { opacity: 1, scale: 1 },
-                  hidden: { opacity: 0, scale: 0 },
-                }}
-                className={
-                  theme.state.darkMode
-                    ? "md:w-96 p-4 bg-white rounded-lg flex items-center flex-col mt-8"
-                    : "text-white md:w-96 p-4 bg-gray-100 rounded-lg flex items-center flex-col mt-8"
-                }
-              >
-                <img src={el.img} alt="" />
-                <h4 className="text-xl font-bold mt-4">{el.name}</h4>
-                <p className="text-lg mt-2 text-justify">{el.desc}</p>
-              </motion.div>
-            ))}
+    <section id="services" className="py-8 transition-colors duration-400">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className="text-center mb-10 flex flex-col items-center">
+          <div className="mb-3">
+            <span className="neu-badge">Core Competencies</span>
           </div>
+          <h2 className="neu-title">
+            Specialized <span className="neu-title-accent">Services</span>
+          </h2>
+          <div className="w-16 h-1 bg-blue-500 mx-auto mt-4 rounded-full" />
+          <p className="text-base sm:text-lg opacity-70 mt-4 max-w-2xl mx-auto">
+            Comprehensive web engineering services spanning design
+            implementation, scalable server architectures, and robust API
+            development.
+          </p>
         </div>
+
+        {/* Services Cards Grid */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+          {serviceData.map((service, index) => (
+            <motion.div
+              key={index}
+              variants={cardVariants}
+              className="neu-card p-8 flex flex-col justify-between group"
+            >
+              <div>
+                {/* Icon Well */}
+                <div className="w-16 h-16 neu-well flex items-center justify-center p-3 rounded-2xl mb-6 group-hover:scale-105 transition-transform duration-300">
+                  <img
+                    src={service.img}
+                    alt={service.name}
+                    className="w-10 h-10 object-contain drop-shadow"
+                  />
+                </div>
+
+                <h3 className="text-xl sm:text-2xl font-bold mb-3 tracking-tight group-hover:text-blue-500 transition-colors duration-200">
+                  {service.name}
+                </h3>
+
+                <p className="text-sm sm:text-base opacity-80 leading-relaxed font-normal text-left">
+                  {service.desc}
+                </p>
+              </div>
+
+              {/* Service Feature Pills */}
+              <div className="mt-6 pt-6 border-t border-white/10 dark:border-white/5 flex flex-wrap items-center gap-2">
+                {service.tags ? (
+                  service.tags.map((tag, tIndex) => (
+                    <span
+                      key={tIndex}
+                      className={`text-xs font-semibold px-3 py-1 rounded-full neu-well-sm ${
+                        tIndex === 0
+                          ? "text-blue-500 dark:text-blue-400"
+                          : tIndex === 1
+                          ? "text-emerald-500 dark:text-emerald-400"
+                          : "opacity-80"
+                      }`}
+                    >
+                      {tag}
+                    </span>
+                  ))
+                ) : (
+                  <>
+                    <span className="text-xs font-semibold px-3 py-1 rounded-full neu-well-sm text-blue-500">
+                      Reliable
+                    </span>
+                    <span className="text-xs font-semibold px-3 py-1 rounded-full neu-well-sm text-emerald-500">
+                      Performant
+                    </span>
+                    <span className="text-xs font-semibold px-3 py-1 rounded-full neu-well-sm opacity-70">
+                      Modern
+                    </span>
+                  </>
+                )}
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
-    </div>
+    </section>
   );
 };
 

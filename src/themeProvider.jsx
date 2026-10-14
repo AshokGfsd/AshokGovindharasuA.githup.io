@@ -3,7 +3,7 @@
 import React, { createContext, useEffect, useReducer, useState } from "react";
 
 export const ThemeContext = createContext({
-  state: { darkMode: false },
+  state: { darkMode: true },
   dispatch: () => {},
 });
 
@@ -12,39 +12,56 @@ const themeReducer = (state, action) => {
     case "LIGHTMODE":
       if (typeof window !== "undefined") {
         localStorage.setItem("darkMode", "false");
+        document.documentElement.classList.remove("dark");
+        document.documentElement.setAttribute("data-theme", "light");
       }
       return { darkMode: false };
     case "DARKMODE":
       if (typeof window !== "undefined") {
         localStorage.setItem("darkMode", "true");
+        document.documentElement.classList.add("dark");
+        document.documentElement.setAttribute("data-theme", "dark");
       }
       return { darkMode: true };
+    case "TOGGLE":
+      const nextMode = !state.darkMode;
+      if (typeof window !== "undefined") {
+        localStorage.setItem("darkMode", nextMode ? "true" : "false");
+        if (nextMode) {
+          document.documentElement.classList.add("dark");
+          document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      }
+      return { darkMode: nextMode };
     default:
       return state;
   }
 };
 
 export function ThemeProvider({ children }) {
-  const [state, dispatch] = useReducer(themeReducer, { darkMode: false });
+  const [state, dispatch] = useReducer(themeReducer, { darkMode: true });
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     try {
-      const mode = localStorage.getItem("darkMode");
-      if (mode === "true") {
-        dispatch({ type: "DARKMODE" });
-      } else if (mode === "false") {
+      const saved = localStorage.getItem("darkMode");
+      if (saved === "false") {
         dispatch({ type: "LIGHTMODE" });
       } else {
-        localStorage.setItem("darkMode", "false");
-        dispatch({ type: "LIGHTMODE" });
+        // Default to dark mode for sleek neumorphic look
+        dispatch({ type: "DARKMODE" });
       }
     } catch {
-      // Ignore localStorage access restrictions
+      dispatch({ type: "DARKMODE" });
     }
   }, []);
 
   return (
-    <ThemeContext.Provider value={{ state, dispatch }}>
+    <ThemeContext.Provider value={{ state, dispatch, mounted }}>
       {children}
     </ThemeContext.Provider>
   );
