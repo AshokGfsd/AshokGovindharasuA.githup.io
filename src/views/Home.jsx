@@ -91,7 +91,7 @@ const Home = () => {
             {/* Action Buttons */}
             <div className="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-5">
               <a
-                href="/Resume.pdf"
+                href="/Ashok_Resume_211026.pdf"
                 target="_blank"
                 rel="noreferrer"
                 className="neu-btn-primary"
