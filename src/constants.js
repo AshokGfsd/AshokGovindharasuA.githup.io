@@ -60,14 +60,6 @@ export const techStack = [
     link: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg",
   },
   {
-    name: "Vuex",
-    link: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuex/vuex-original.svg",
-  },
-  {
-    name: "Vue Router",
-    link: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vue-router/vue-router-original.svg",
-  },
-  {
     name: "Socket.io",
     link: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/socketio/socketio-original.svg",
   },
